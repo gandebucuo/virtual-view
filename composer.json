@@ -1,5 +1,5 @@
 {
-    "name": "virtual-v",
+    "name": "virtual/v",
     "description": "virtual",
     "license": "MIT",
     "autoload": {
