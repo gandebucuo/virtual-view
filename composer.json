@@ -1,0 +1,24 @@
+{
+    "name": "redis/test",
+    "description": "redis test",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Redis\\Test\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "干的不错",
+            "email": "1059636119@qq.com"
+        }
+    ],
+    "require": {},
+    "extra": {
+        "laravel": {
+            "providers": [
+                "VirtualCloud\\RedisViewServeProvider"
+            ]
+        }
+    }
+}

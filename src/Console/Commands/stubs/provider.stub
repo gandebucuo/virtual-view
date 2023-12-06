@@ -1,0 +1,9 @@
+<?php
+namespace  {{namespace}};
+
+use {{provider}} as {{extend}};
+
+class {{class}} extends {{extend}}
+{
+
+}
