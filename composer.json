@@ -1,6 +1,6 @@
 {
-    "name": "redis/test",
-    "description": "redis test",
+    "name": "virtual-v",
+    "description": "virtual",
     "license": "MIT",
     "autoload": {
         "psr-4": {
