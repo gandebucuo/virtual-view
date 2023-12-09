@@ -17,20 +17,9 @@ class RedisController extends Controller
         Redis::select($db);
     }
 
-    public function redis_dbs_index()
+    public function index()
     {
-//        for($i=1;$i<4;$i++){
-//            Redis::set("name$i",'张三');
-//            Redis::hmset("room$i","class1","班级1","class2","班级2");
-//            Redis::rpush("names$i","小明","小红");
-//            Redis::sadd("set$i","1111","2222","3333");
-//            Redis::zadd("zset$i",1,"小刚",2,"小花",3,"小子");
-//        }
-        $dbs = [];
-        for($i=0;$i<16;$i++){
-            $dbs[] = ['label'=>"db$i"];
-        }
-        return success('库列表',$dbs);
+        return view('redis-view::index');
     }
 
     //keys列表
@@ -71,7 +60,8 @@ class RedisController extends Controller
             }
             $data[]  = ['name'=>$v,'type'=>$types[$key_type],'size'=>$size,'key'=>$key];
         }
-        return success('keys列表',$data);
+
+        return $this->success('keys列表',$data);
     }
 
     //展示key详情
@@ -100,7 +90,7 @@ class RedisController extends Controller
                 break;
         }
         $expire_time = Redis::ttl($key);
-        return success('key详情',['val'=>$data,'expire_time'=>$expire_time>0?$expire_time:'','key_type'=>$key_type,'key'=>$key]);
+        return $this->success('key详情',['val'=>$data,'expire_time'=>$expire_time>0?$expire_time:'','key_type'=>$key_type,'key'=>$key]);
     }
 
     //保存redis值
@@ -147,7 +137,7 @@ class RedisController extends Controller
             default:
                 break;
         }
-        return success('保存key',['val'=>$data,'expire_time'=>$expire_time>0?$expire_time:'']);
+        return $this->success('保存key',['val'=>$data,'expire_time'=>$expire_time>0?$expire_time:'']);
     }
 
     //刷新redis值
@@ -176,7 +166,7 @@ class RedisController extends Controller
         }
         //返回秒级过期时间
         $expire_time = Redis::ttl($key);
-        return success('刷新key详情',['val'=>$data,'expire_time'=>$expire_time>0?$expire_time:'']);
+        return $this->success('刷新key详情',['val'=>$data,'expire_time'=>$expire_time>0?$expire_time:'']);
     }
 
     //删除
@@ -208,9 +198,10 @@ class RedisController extends Controller
         }
         //返回秒级过期时间
         $expire_time = Redis::ttl($key);
-        return success('删除key',['val'=>$data,'expire_time'=>$expire_time>0?$expire_time:'']);
+        return $this->success('删除key',['val'=>$data,'expire_time'=>$expire_time>0?$expire_time:'']);
     }
 
+    //设置过期时间
     public function redis_expire()
     {
         $key  = $this->request->key;
@@ -219,6 +210,16 @@ class RedisController extends Controller
         }else{
             Redis::persist($key);
         }
+    }
+
+    //请求成功
+    public function success($msg,$data){
+        return response()->json([
+            'status'  => 200,
+            'code'    => 1,
+            'message' => $msg,
+            'data'    => $data,
+        ]);
     }
 }
 
