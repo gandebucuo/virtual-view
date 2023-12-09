@@ -6,6 +6,7 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Redis-View</title>
+    <link href='https://www.redis.net.cn/Application/Home/View/Public/img/icon.png' rel='shortcut icon' />
     <link rel="stylesheet" href="http://images.sugoujx.com/blog/bootstrap/css/bootstrap.min.css"  crossorigin="anonymous">
     <style>
         li{
@@ -92,63 +93,18 @@
         <div class="col-10" id="table-container">
         </div>
     </div>
-{{--    <div class="row"  id="bottom">--}}
     <div class="row"  style="display: none" id="bottom">
         <div class="col-2">
         </div>
         <div class="col-10">
             <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
                 <li class="nav-item" role="presentation" id="keys">
-{{--                    <button class="nav-link active" id="pills-home-tab" data-toggle="pill" data-target="#pills-home" type="button" role="tab" aria-controls="pills-home" aria-selected="true">Home</button>--}}
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-profile-tab" data-toggle="pill" data-target="#pills-profile" type="button" role="tab" aria-controls="pills-profile" aria-selected="false">生存时间</button>
                 </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
-{{--                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">--}}
-{{--                    <div class="form-group row">--}}
-{{--                        <label for="inputEmail3" class="col-sm-1 col-form-label">键名</label>--}}
-{{--                        <div class="col-sm-11">--}}
-{{--                            <input type="email" class="form-control" id="val" disabled>--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                    <div class="form-group row">--}}
-{{--                        <label class="col-sm-1 col-form-label" for="exampleFormControlTextarea1"></label>--}}
-{{--                        <div class="col-sm-11">--}}
-{{--                            <table class="styled-table">--}}
-{{--                                <thead>--}}
-{{--                                    <tr>--}}
-{{--                                        <th>值</th>--}}
-{{--                                        <th style="width: 200px">操作</th>--}}
-{{--                                    </tr>--}}
-{{--                                </thead>--}}
-{{--                                <tbody>--}}
-{{--                                    <tr>--}}
-{{--                                        <td contenteditable="true" class="td_list">--}}
-{{--                                            123123--}}
-{{--                                        </td>--}}
-{{--                                        <td>--}}
-{{--                                            <button type="submit" class="btn btn-primary my-1" onclick=listSave()>应用</button>--}}
-{{--                                            <button type="submit" class="btn btn-primary my-1" id="refresh">刷新</button>--}}
-{{--                                        </td>--}}
-{{--                                    </tr>--}}
-{{--                                </tbody>--}}
-{{--                            </table>--}}
-{{--                        </div>--}}
-{{--                </div>--}}
-{{--                <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">--}}
-{{--                    <div class="form-group form-check">--}}
-{{--                        <input type="checkbox" class="form-check-input" id="exampleCheck1">--}}
-{{--                        <label class="form-check-label" for="exampleCheck1">过期</label>--}}
-{{--                    </div>--}}
-{{--                    <div class="form-group row">--}}
-{{--                        <label for="inputEmail3" class="col-sm-1 col-form-label">生存时间（秒）</label>--}}
-{{--                        <div class="col-sm-11">--}}
-{{--                            <input type="email" class="form-control" id="inputEmail3">--}}
-{{--                        </div>--}}
-{{--                    </div>--}}
-{{--                </div>--}}
             </div>
         </div>
     </div>
@@ -171,7 +127,7 @@ $(document).ready(function() {
         var keyCode = event.keyCode;
         searchKey = $("#search").val();
         if (keyCode === 13) {
-            renderData("api/redis_keys_index?db="+redis_db+"&searchKey="+searchKey)
+            renderData("redis-view/redis_keys_index?db="+redis_db+"&searchKey="+searchKey)
         }
     });
 });
@@ -190,7 +146,7 @@ function highlight(clickedElement,db) {
     clickedElement.classList.add('active');
     redis_db  = db;
     searchKey = '搜索名称';
-    renderData("api/redis_keys_index?db="+redis_db)
+    renderData("redis-view/redis_keys_index?db="+redis_db);
     $("#bottom").hide();
 }
 
@@ -207,16 +163,13 @@ function trHighlight(clickedElement,key,name) {
         tr.classList.remove('active');
     });
 
-
     redis_key = key;
-    console.log(key);
-    console.log(name);
     // 为被点击的 <li> 添加 active 类
     clickedElement.classList.add('active');
 
     $.ajax({
         type:"get",
-        url:"api/redis_key_show?db=" + redis_db + "&key=" + key,
+        url:"redis-view/redis_key_show?db=" + redis_db + "&key=" + key,
         dataType:"json",
         success:function(data){
             const res = data.data;
@@ -409,7 +362,6 @@ function trHighlight(clickedElement,key,name) {
                         '     </div>\n' +
                         '</div>\n';
                     break;
-
             }
             bottom += '</button>';
             html += '<div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab">\n' +
@@ -469,11 +421,10 @@ function save(type,index,value,index_i,value_i){
         default:
             break;
     }
-    console.log(param);
     if(param){
         $.ajax({
             type:"get",
-            url:"api/redis_val_save?db=" + redis_db + "&key=" + redis_key + "&key_type=" + redis_key_type + param,
+            url:"redis-view/redis_val_save?db=" + redis_db + "&key=" + redis_key + "&key_type=" + redis_key_type + param,
             dataType:"json",
             success:function(data){
 
@@ -506,51 +457,13 @@ function del(type,index,value) {
     if(param){
         $.ajax({
             type:"get",
-            url:"api/redis_del?db=" + redis_db + "&key=" + redis_key + "&key_type=" + redis_key_type  + param,
+            url:"redis-view/redis_del?db=" + redis_db + "&key=" + redis_key + "&key_type=" + redis_key_type  + param,
             dataType:"json",
             success:function(data){
 
             }
         });
     }
-}
-
-
-
-function listDel(index) {
-    $('#trList'+index).remove();
-    $.ajax({
-        type:"get",
-        url:"api/redis_del?db=" + redis_db + "&key=" + redis_key + "&key_type=" + redis_key_type  + "&index=" + index,
-        dataType:"json",
-        success:function(data){
-
-        }
-    });
-}
-
-function setDel(index,val) {
-    $('#trList'+index).remove();
-    $.ajax({
-        type:"get",
-        url:"api/redis_del?db=" + redis_db + "&key=" + redis_key + "&key_type=" + redis_key_type  + "&value=" + val,
-        dataType:"json",
-        success:function(data){
-
-        }
-    });
-}
-
-function zsetDel(index_i,index){
-    $('#trList'+index_i).remove();
-    $.ajax({
-        type:"get",
-        url:"api/redis_del?db=" + redis_db + "&key=" + redis_key + "&key_type=" + redis_key_type  + "&index=" + index,
-        dataType:"json",
-        success:function(data){
-
-        }
-    });
 }
 
 //过期时间选择是否展示
@@ -565,7 +478,7 @@ function expireSave(){
     const expire_time = $("#expireTime").val();
     $.ajax({
         type:"get",
-        url:"api/redis_expire?db=" + redis_db + "&key=" + redis_key  + "&expire_time=" + expire_time,
+        url:"redis-view/redis_expire?db=" + redis_db + "&key=" + redis_key  + "&expire_time=" + expire_time,
         dataType:"json",
         success:function(data){
 
@@ -577,14 +490,13 @@ function expireSave(){
 function refresh() {
     $.ajax({
         type:"get",
-        url:"api/redis_val_refresh?db=" + redis_db + "&key=" + redis_key + "&key_type=" + redis_key_type,
+        url:"redis-view/redis_val_refresh?db=" + redis_db + "&key=" + redis_key + "&key_type=" + redis_key_type,
         dataType:"json",
         success:function(data){
 
         }
     });
 }
-
 
 //渲染redis键值列表
 function renderData($url){
